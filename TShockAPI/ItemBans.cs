@@ -65,7 +65,7 @@ namespace TShockAPI
 		/// <param name="args">The standard event arguments.</param>
 		internal void OnGameUpdate(EventArgs args)
 		{
-			if ((DateTime.UtcNow - LastTimelyRun).TotalSeconds >= 1)
+			if ((DateTime.UtcNow - LastTimelyRun).TotalSeconds >= 0.1)
 			{
 				OnSecondlyUpdate(args);
 			}

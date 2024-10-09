@@ -2584,10 +2584,21 @@ namespace TShockAPI
 			if (OnPlayerSlot(args.Player, args.Data, plr, slot, stack, prefix, type) || plr != args.Player.Index || slot < 0 ||
 				slot > NetItem.MaxInventory)
 				return true;
+
 			if (args.Player.IgnoreSSCPackets)
 			{
 				TShock.Log.ConsoleDebug(GetString("GetDataHandlers / HandlePlayerSlot rejected ignore ssc packets"));
 				args.Player.SendData(PacketTypes.PlayerSlot, "", args.Player.Index, slot, prefix);
+				return true;
+			}
+
+			string itemName = EnglishLanguage.GetItemNameById(type);
+			if (TShock.ItemBans.DataModel.ItemIsBanned(itemName))
+			{
+				TShock.Log.ConsoleDebug(GetString("GetDataHandlers / HandlePlayerSlot removed banned item: {0} from {1}'s inventory", itemName, args.Player.Name));
+				args.Player.SendErrorMessage(GetString("{0} is banned! Removed it.", itemName));
+				args.Player.Inventory.ElementAt(slot).SetDefaults(0);
+				args.Player.SendData(PacketTypes.PlayerSlot, "", args.Player.Index, slot, type);
 				return true;
 			}
 
