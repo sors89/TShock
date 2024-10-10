@@ -2597,7 +2597,6 @@ namespace TShockAPI
 			{
 				TShock.Log.ConsoleDebug(GetString("GetDataHandlers / HandlePlayerSlot removed banned item: {0} from {1}'s inventory", itemName, args.Player.Name));
 				args.Player.SendErrorMessage(GetString("{0} is banned! Removed it.", itemName));
-				args.Player.SendInfoMessage(slot.ToString());
 				if (slot <= NetItem.InventorySlots)
 				{
 					args.TPlayer.inventory[slot].SetDefaults(0);
