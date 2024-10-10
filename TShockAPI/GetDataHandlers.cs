@@ -2597,9 +2597,13 @@ namespace TShockAPI
 			{
 				TShock.Log.ConsoleDebug(GetString("GetDataHandlers / HandlePlayerSlot removed banned item: {0} from {1}'s inventory", itemName, args.Player.Name));
 				args.Player.SendErrorMessage(GetString("{0} is banned! Removed it.", itemName));
-				args.Player.Inventory.ElementAt(slot).SetDefaults(0);
-				args.Player.SendData(PacketTypes.PlayerSlot, "", args.Player.Index, slot, type);
-				return true;
+				args.Player.SendInfoMessage(slot.ToString());
+				if (slot <= NetItem.InventorySlots)
+				{
+					args.TPlayer.inventory[slot].SetDefaults(0);
+					args.Player.SendData(PacketTypes.PlayerSlot, "", args.Player.Index, slot, type);
+					return true;
+				}
 			}
 
 			// Garabage? Or will it cause some internal initialization or whatever?
